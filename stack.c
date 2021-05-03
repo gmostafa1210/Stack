@@ -1,10 +1,10 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 
 /*Node*/
 struct Node{
     int data;
-
     struct Node *next;
 }*node;
 
@@ -12,28 +12,27 @@ struct Node{
 struct Head{
     int count;
     struct Node *p;
-}*head;
+}*head1,*head2;
 
-/*Create Head*/
-void create_head(){
-    head = (struct Head*)malloc(sizeof(struct Head));
-    head->count = 0;
-    head->p = NULL;
+/*Create Head 1*/
+void create_head1(){
+    head1 = (struct Head*)malloc(sizeof(struct Head));
+    head1->count = 0;
+    head1->p = NULL;
 }
 
-/*Create Node*/
-void create_node(){
-    node = (struct Node*)malloc(sizeof(struct Node));
-    printf("Enter Data: ");
-    scanf("%d", &node->data);
-    node->next = NULL;
+/*Create Head 2*/
+void create_head2(){
+    head2 = (struct Head*)malloc(sizeof(struct Head));
+    head2->count = 0;
+    head2->p = NULL;
 }
 
-/*Display*/
-void display(){
+/*Display1*/
+void display1(){
     struct Node *temp;
-    temp = head->p;
-    printf("\nDisplay:\n");
+    temp = head1->p;
+    printf("\nDisplay 1:\n");
     printf("-------\n");
     while(temp != NULL){
         printf("Data: %d\n", temp->data);
@@ -42,42 +41,82 @@ void display(){
     printf("-------\n\n");
 }
 
-/*Display Top*/
-void display_top(){
-    if(head->p == 0){
+/*Display2*/
+void display2(){
+    struct Node *temp;
+    temp = head2->p;
+    printf("\nDisplay 2:\n");
+    printf("-------\n");
+    while(temp != NULL){
+        printf("Data: %d\n", temp->data);
+        temp = temp->next;
+    }
+    printf("-------\n\n");
+}
+
+/*Display Top1*/
+void display_top1(){
+    if(head1->p == 0){
         printf("\nNothing to display.\n");
     }
     else{
         struct Node *top;
-        top = head->p;
+        top = head1->p;
         printf("Top data: %d\n",top->data);
     }
 }
 
-/*Push*/
-void push(){
-    create_node();
-    node->next = head->p;
-    head->p = node;
-    head->count++;
+/*Display Top2*/
+void display_top2(){
+    if(head2->p == 0){
+        printf("\nNothing to display.\n");
+    }
+    else{
+        struct Node *top;
+        top = head2->p;
+        printf("Top data: %d\n",top->data);
+    }
+}
+
+/*Push 1*/
+void push1(){
+ node = (struct Node*)malloc(sizeof(struct Node));
+ printf("Enter data: ");
+ scanf("%d",&node->data);
+ node->next = head1->p;
+ head1->p = node;
+ head1->count++;
+}
+
+/*Push 2*/
+void push2(int x){
+ node = (struct Node*)malloc(sizeof(struct Node));
+ node->data = x;
+ node->next = head2->p;
+ head2->p = node;
+ head2->count++;
 }
 
 /*Pop*/
 void pop(){
-    if(head->count == 0){
-        printf("\n\nNo data for pop.\n");
+    if(head1->count == 0){
+        printf("No data for pop.\n");
     }
     else{
         struct Node *temp;
-        temp = head->p;
-        head->p = temp->next;
+        int d;
+        temp = head1->p;
+        head1->p = temp->next;
+        d = temp->data;
         free(temp);
-        head->count--;
+        push2(d);
+        head1->count--;
     }
 }
 
 int main(){
-    create_head();
+    create_head1();
+    create_head2();
     printf("Stack\n");
     int n;
     while(1){
@@ -90,16 +129,34 @@ int main(){
         scanf("%d",&n);
 
         if(n == 1){
-            push();
+            push1();
         }
         else if(n == 2){
             pop();
         }
         else if(n == 3){
-            display();
+            printf("Press 1 for display 1.\n");
+            printf("Press 2 for display 2.\n");
+            int d;
+            scanf("%d",&d);
+            if(d == 1){
+                display1();
+            }
+            else if(d == 2){
+                display2();
+            }
         }
         else if(n == 4){
-            display_top();
+            printf("Press 1 for display top1.\n");
+            printf("Press 2 for display top2.\n");
+            int dt;
+            scanf("%d",&dt);
+            if(dt == 1){
+                display_top1();
+            }
+            else if(dt == 2){
+                display_top2();
+            }
         }
         else if(n == 0){
             printf("Thank You.");
